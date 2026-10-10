@@ -1,0 +1,10 @@
+{
+  "request_time": 1704067200,
+  "response_time": 1704067202,
+  "now": 1704067230,
+  "date": "Mon, 01 Jan 2024 00:00:00 GMT",
+  "age": "5",
+  "cache_control": [
+    "public, max-age=60"
+  ]
+}

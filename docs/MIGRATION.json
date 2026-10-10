@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "slug": "http-cache-age-lab",
+  "domain": "protocol",
+  "guidance_group": "medium",
+  "source_commit": "1286096c10a23bbb04aca83679ae3c31f3326030",
+  "source_repository": "mytestapp20261001-collab/mytest-engineering-toolbox",
+  "source_repository_id": 1411411288,
+  "source_path": "tools/http-cache-age-lab",
+  "root_path": ".",
+  "publication_status": "prepared_only; coordinator verifies final repository identity and remote CI",
+  "expected_repository": "mytestapp20261001-collab/http-cache-age-lab",
+  "repository_id": null,
+  "preserved_files": [
+    {
+      "path": "README.md",
+      "size_bytes": 3460,
+      "sha256": "293d3fd1a35acff0e31e916bfa89a164f9eb1fd2499ac7be649a2dd3345d2ec3",
+      "git_blob_sha1": "828b67932c8e57d1400e7f8389d18204bfddc94a",
+      "utf8": true,
+      "source_path": "tools/http-cache-age-lab/README.md"
+    },
+    {
+      "path": "SKILL.md",
+      "size_bytes": 624,
+      "sha256": "eae3c46036bb9b77fda7e41d26984e8e912954627a3e463d40e90b6c99ecba19",
+      "git_blob_sha1": "1f1109b7c5836d0ff778781b14309fd507ec6321",
+      "utf8": true,
+      "source_path": "tools/http-cache-age-lab/SKILL.md"
+    },
+    {
+      "path": "examples/bad.json",
+      "size_bytes": 194,
+      "sha256": "3eb9f5e73af0cdb96fd242cfefeb7e92a51190e80d816b7efc95d8e61d776d83",
+      "git_blob_sha1": "ac068608abdb92b88098afaad4a238d1a68d0de8",
+      "utf8": true,
+      "source_path": "tools/http-cache-age-lab/examples/bad.json"
+    },
+    {
+      "path": "examples/good.json",
+      "size_bytes": 193,
+      "sha256": "e2017d14d668b905863f65b449a1be7fc611a6fa9ac57176a293e2c614466be0",
+      "git_blob_sha1": "3a592e5b63af32b2274e3081eca7ecfa8d1bb064",
+      "utf8": true,
+      "source_path": "tools/http-cache-age-lab/examples/good.json"
+    },
+    {
+      "path": "test_tool.py",
+      "size_bytes": 4965,
+      "sha256": "be615fdc5fb13703501ca3f40bce318326149fcb8d1e285a306512aa9bd88c07",
+      "git_blob_sha1": "13e8aca7d9097ecf4bd70b1d66c96b3d6f543a3e",
+      "utf8": true,
+      "source_path": "tools/http-cache-age-lab/test_tool.py"
+    },
+    {
+      "path": "tool.py",
+      "size_bytes": 7904,
+      "sha256": "75a15853744db265ef9f14825a459f92e6a131f885cdeff4749212f9b4db2aec",
+      "git_blob_sha1": "bc9f31ecd2d944ad594b37aa350c97bfb3aad3d1",
+      "utf8": true,
+      "source_path": "tools/http-cache-age-lab/tool.py"
+    },
+    {
+      "path": "LICENSE",
+      "size_bytes": 1076,
+      "sha256": "dce76471613629e93f3f98b7aaa6f72ff9adb88204a3f83d3045952017ab2f46",
+      "git_blob_sha1": "677c4463d59b560db9c1fde1052eff6eefa6441a",
+      "utf8": true,
+      "source_path": "LICENSE"
+    },
+    {
+      "path": ".gitignore",
+      "size_bytes": 62,
+      "sha256": "e4d5aecc4cd36f593c2e7f3dad08b24261b13466b898004a445614058d29d8de",
+      "git_blob_sha1": "fe9f8fb619601213cbfef4f6eadb5d413d8f7f01",
+      "utf8": true,
+      "source_path": ".gitignore"
+    }
+  ],
+  "readme_checks": [
+    {
+      "label": "README example",
+      "args": [
+        "tool.py",
+        "--input",
+        "examples/good.json",
+        "--pretty"
+      ],
+      "expected_exit": 0,
+      "output": "json",
+      "documented_command": "python3 tool.py --input examples/good.json --pretty"
+    },
+    {
+      "label": "README example",
+      "args": [
+        "tool.py",
+        "--input",
+        "examples/bad.json",
+        "--pretty"
+      ],
+      "expected_exit": 1,
+      "output": "json",
+      "documented_command": "python3 tool.py --input examples/bad.json --pretty  # expected exit 1: stale"
+    },
+    {
+      "label": "CLI help",
+      "args": [
+        "tool.py",
+        "--help"
+      ],
+      "expected_exit": 0,
+      "output": "help"
+    },
+    {
+      "label": "CLI missing input",
+      "args": [
+        "tool.py"
+      ],
+      "expected_exit": 2,
+      "output": "json"
+    },
+    {
+      "label": "CLI unknown argument",
+      "args": [
+        "tool.py",
+        "--unsupported-migration-test"
+      ],
+      "expected_exit": 2,
+      "output": "json"
+    }
+  ]
+}
