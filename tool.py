@@ -146,8 +146,9 @@ def audit(data):
         for entry in split_quoted(header(field)):
             require(bool(entry), "empty Cache-Control directive unsupported")
             name, sep, raw = entry.partition("=")
-            name = name.strip(" \t").lower()
+            name = name.strip(" \t")
             require(bool(TOKEN.fullmatch(name)), "invalid Cache-Control directive name")
+            name = name.lower()
             value = parameter_value(raw.strip(" \t")) if sep else None
             directives.setdefault(name, []).append(value)
     maximums = directives.get("max-age", [])
