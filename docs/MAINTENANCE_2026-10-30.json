@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "repository": "mytestapp20261001-collab/http-cache-age-lab",
+  "repository_id": 1412961597,
+  "base_commit": "9ef7af6a232a9c100bbb2251a8e9c2b63192aa31",
+  "date": "2026-10-30",
+  "scope": "ASCII directive validation before normalization. Historical MIGRATION.json, README, SKILL, experiment group unchanged. Synthetic offline checks only.",
+  "changes": [
+    {
+      "path": "tool.py",
+      "original_sha256": "75a15853744db265ef9f14825a459f92e6a131f885cdeff4749212f9b4db2aec",
+      "current_sha256": "6205a30208b8260c5d66dfcaa06e9acb22e535e286e1c3f3fa0ec1fb6ff9a6c8",
+      "reason": "Reject Unicode lookalikes before ASCII case normalization; retain ASCII behavior."
+    },
+    {
+      "path": "test_tool.py",
+      "original_sha256": "be615fdc5fb13703501ca3f40bce318326149fcb8d1e285a306512aa9bd88c07",
+      "current_sha256": "f1cadab88b80e6db385ba61637ec4687fe304cce8672d2d76bfd380e43d59e9e",
+      "reason": "API and CLI Unicode rejection, ASCII compatibility, redaction and receipt fail-closed regression tests."
+    }
+  ]
+}

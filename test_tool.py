@@ -66,6 +66,28 @@ class CLITests(unittest.TestCase):
         self.assertEqual(self.run_tool(raw).stdout, self.run_tool(raw).stdout)
 
 class CacheTests(unittest.TestCase):
+    def test_directive_names_are_ascii_before_case_normalization(self):
+        for name in ["K", "X-K", "KEY", "ſ", "İ", "é"]:
+            with self.subTest(name=name):
+                d = fixture(); d["cache_control"] = ["max-age=60, " + name + "=1"]
+                with self.assertRaises(tool.InputError): tool.audit(d)
+
+    def test_ascii_directive_names_remain_case_insensitive(self):
+        d = fixture(); d["cache_control"] = ["MAX-AGE=60, X-Key=1"]
+        out = tool.audit(d)
+        self.assertTrue(out["ok"])
+        self.assertEqual(out["unmodeled_directives"], ["x-key"])
+
+    def test_cli_unicode_directive_name_is_redacted_error(self):
+        d = fixture(); d["cache_control"] = ["max-age=60, X-KEY=PRIVATE_VALUE"]
+        run = subprocess.run([sys.executable, str(ROOT / "tool.py")],
+                             input=json.dumps(d), capture_output=True, text=True)
+        self.assertEqual(run.returncode, 2)
+        self.assertEqual(run.stderr, "")
+        self.assertEqual(json.loads(run.stdout)["error"]["code"], "invalid_input")
+        self.assertNotIn("PRIVATE_VALUE", run.stdout)
+        self.assertNotIn("X-", run.stdout)
+
     def test_age_formula(self):
         out=tool.audit(fixture())
         self.assertEqual(out["current_age_seconds"], 35)
@@ -100,5 +122,20 @@ class CacheTests(unittest.TestCase):
     def test_apparent_age_dominates(self):
         d=fixture(); d["date"]="Sun, 31 Dec 2023 23:59:00 GMT"
         self.assertEqual(tool.audit(d)["current_age_seconds"],90)
+
+class MaintenanceTests(unittest.TestCase):
+    def test_receipt_rejects_unrecorded_or_historical_hash_changes(self):
+        from scripts.validate_release import maintenance_hashes
+        record = json.loads((ROOT / "docs/MIGRATION.json").read_text())
+        receipt = json.loads((ROOT / "docs/MAINTENANCE_2026-10-30.json").read_text())
+        expected = maintenance_hashes(record, receipt)
+        self.assertIn("tool.py", expected)
+        for key, value in [("path", "README.md"), ("original_sha256", "0" * 64),
+                           ("current_sha256", "bad"), ("reason", "")]:
+            bad = copy.deepcopy(receipt); bad["changes"][0][key] = value
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                maintenance_hashes(record, bad)
+        bad = copy.deepcopy(receipt); bad["changes"].append(bad["changes"][0])
+        with self.assertRaises(ValueError): maintenance_hashes(record, bad)
 
 if __name__ == "__main__": unittest.main()
